@@ -1,5 +1,5 @@
-import { Navbar } from "@material-tailwind/react";
 import NavLinks from "@/app/home/navbar";
+
 
 export default function Experience() {
     return (

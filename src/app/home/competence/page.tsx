@@ -1,6 +1,7 @@
 import Image from "next/image";
 import NavLinks from "@/app/home/navbar";
 
+
 export default function Skills() {
 return (
     <>
