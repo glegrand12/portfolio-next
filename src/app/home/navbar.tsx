@@ -34,6 +34,11 @@ const links = [
         href: '/home/contact',
         icon: UserGroupIcon,
     },
+    {
+        name: "Memoire",
+        href: '/home/memory',
+        icon: DocumentDuplicateIcon,
+    }
 ];
 
 

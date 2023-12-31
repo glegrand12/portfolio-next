@@ -27,9 +27,14 @@ export default function Contact() {
                     <Image alt="GitLab" src="/logo/gitlab.png" height={25} width={25} className="mx-auto" />
                     <Link href="https://gitlab.com/gregouse" className="text-decoration-none" target="_blank">gitlab</Link>
                 </p>
-                <p>
+                <p className="mb-5">
                     <Image alt="LinkedIn" src="/logo/linkedin.png" height={25} width={25} className="mx-auto" />
                     <Link href="https://www.linkedin.com/in/gregoire-legrand/" className="text-decoration-none" target="_blank">linkedin</Link>
+                </p>
+
+                <p className="mb-5">
+                    <Image alt="github" src="/logo/github.png" height={25} width={25} className="mx-auto" />
+                    <Link href="https://github.com/glegrand12/portfolio-next" className="text-decoration-none" target="_blank">Lien vers le repo github</Link>
                 </p>
             </div>
 
