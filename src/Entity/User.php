@@ -5,6 +5,7 @@ namespace App\Entity;
 use ApiPlatform\Metadata\ApiResource;
 use App\Repository\UserRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -12,7 +13,8 @@ use Symfony\Component\Security\Core\User\UserInterface;
 #[ApiResource()]
 #[UniqueEntity(fields: ['email'])]
 #[ORM\Entity(repositoryClass: UserRepository::class)]
-class User implements UserInterface
+#[ORM\Table(name: "users")]
+class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -26,14 +28,20 @@ class User implements UserInterface
     #[ORM\Column]
     private string $password;
 
-    #[ORM\Column]
-    private string $roles;
+    #[ORM\Column(type: 'json')]
+    private array $roles = [];
 
     #[ORM\Column]
     private string $firstName;
 
     #[ORM\Column]
     private string $lastName;
+
+    #[ORM\ManyToOne(targetEntity: Company::class, inversedBy: 'users')]
+    #[ORM\Column]
+    private Company $company;
+
+
 
     public function getId(): ?int
     {
@@ -42,17 +50,22 @@ class User implements UserInterface
 
     public function getRoles(): array
     {
-        // TODO: Implement getRoles() method.
+        // Guarantee every user at least has ROLE_USER
+        $roles = $this->roles;
+        $roles[] = 'ROLE_USER';
+
+        return array_unique($roles);
     }
 
     public function eraseCredentials()
     {
-        // TODO: Implement eraseCredentials() method.
+        // If you store any temporary, sensitive data on the user, clear it here
+        // $this->plainPassword = null;
     }
 
     public function getUserIdentifier(): string
     {
-        // TODO: Implement getUserIdentifier() method.
+        return $this->email;
     }
 
     public function getEmail(): string
@@ -93,6 +106,21 @@ class User implements UserInterface
     public function setLastName(string $lastName): void
     {
         $this->lastName = $lastName;
+    }
+
+    public function setRoles(array $roles): void
+    {
+        $this->roles = $roles;
+    }
+
+    public function getCompany(): Company
+    {
+        return $this->company;
+    }
+
+    public function setCompany(Company $company): void
+    {
+        $this->company = $company;
     }
 
 }

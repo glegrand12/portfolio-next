@@ -5,6 +5,7 @@ namespace App\Entity;
 use ApiPlatform\Metadata\ApiResource;
 
 use App\Repository\CompanyRepository;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 #
@@ -35,6 +36,9 @@ class Company
 
     #[ORM\Column(length: 255)]
     private ?string $siret = null;
+
+    #[ORM\OneToMany(targetEntity: User::class, mappedBy: 'company', orphanRemoval: true)]
+    private Collection $users;
 
 
     public function getId(): ?int
@@ -113,4 +117,32 @@ class Company
 
         return $this;
     }
+
+    public function getUsers(): Collection
+    {
+        return $this->users;
+    }
+
+   /** public function addUser(User $user): self
+    * {
+        * if (!$this->users->contains($user)) {
+            * $this->users->add($user);
+            * $user->setCompany($this);
+        * }
+ *
+* return $this;
+    * }
+    *
+    * public function removeUser(User $user): self
+    * {
+    * if ($this->users->removeElement($user)) {
+    * if ($user->getCompany() === $this) {
+    * $user->setCompany(null);
+    * }
+    * }
+    *
+    * return $this;
+    * }
+    *
+ **/
 }

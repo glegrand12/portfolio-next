@@ -8,7 +8,6 @@ use Doctrine\ORM\Mapping as ORM;
 
 #[ApiResource()]
 #[ORM\Entity()]
-//#[ORM\Entity(repositoryClass: ProductRepository::class)]
 class Product
 {
     #[ORM\Id]
@@ -19,7 +18,7 @@ class Product
     #[ORM\Column(length: 255)]
     private string $name;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(type: 'text')]
     private string $description;
 
     #[ORM\Column(type: 'float')]
@@ -29,7 +28,7 @@ class Product
     private ?string $image = null;
 
     #[ORM\Column(length: 255)]
-    private string $category;
+    private  $category;
 
     public function getId(): ?int
     {
@@ -38,7 +37,7 @@ class Product
 
     public function getName(): string
     {
-        return $name;
+        return $this->name;
     }
 
     public function setName(string $name): self
@@ -50,7 +49,7 @@ class Product
 
     public function getDescription(): string
     {
-        return $description;
+        return $this->description;
     }
 
     public function setDescription(string $description): self
@@ -62,7 +61,7 @@ class Product
 
     public function getPrice(): float
     {
-        return $price;
+        return $this->price;
     }
 
     public function setPrice(float $price): self
@@ -74,7 +73,7 @@ class Product
 
     public function getImage(): ?string
     {
-        return $image;
+        return $this->image;
     }
 
     public function setImage(?string $image): self
@@ -86,7 +85,7 @@ class Product
 
     public function getCategory(): string
     {
-        return $category;
+        return $this->category;
     }
 
     public function setCategory(string $category): self

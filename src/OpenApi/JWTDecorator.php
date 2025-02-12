@@ -10,13 +10,15 @@ final class JWTDecorator implements OpenApiFactoryInterface
 {
     public function __construct(
         private OpenApiFactoryInterface $decorated
-    ) {}
+    ) {
+    }
 
     public function __invoke(array $context = []): OpenApi
     {
         $openApi = ($this->decorated)($context);
+        
         $schemas = $openApi->getComponents()->getSchemas();
-
+        
         $schemas['Token'] = new \ArrayObject([
             'type' => 'object',
             'properties' => [
@@ -26,6 +28,7 @@ final class JWTDecorator implements OpenApiFactoryInterface
                 ],
             ],
         ]);
+        
         $schemas['Credentials'] = new \ArrayObject([
             'type' => 'object',
             'properties' => [
@@ -35,16 +38,9 @@ final class JWTDecorator implements OpenApiFactoryInterface
                 ],
                 'password' => [
                     'type' => 'string',
-                    'example' => 'password',
+                    'example' => 'apassword',
                 ],
             ],
-        ]);
-
-        $schemas = $openApi->getComponents()->getSecuritySchemes() ?? [];
-        $schemas['JWT'] = new \ArrayObject([
-            'type' => 'http',
-            'scheme' => 'bearer',
-            'bearerFormat' => 'JWT',
         ]);
 
         $pathItem = new Model\PathItem(
@@ -64,7 +60,7 @@ final class JWTDecorator implements OpenApiFactoryInterface
                         ],
                     ],
                 ],
-                summary: 'Get JWT token to login.',
+                summary: 'Get JWT token to authenticate',
                 requestBody: new Model\RequestBody(
                     description: 'Generate new JWT Token',
                     content: new \ArrayObject([
@@ -75,11 +71,19 @@ final class JWTDecorator implements OpenApiFactoryInterface
                         ],
                     ]),
                 ),
-                security: [],
             ),
         );
-        $openApi->getPaths()->addPath('/authentication_token', $pathItem);
-
+        
+        $openApi = $openApi->withPaths($openApi->getPaths()->withPath('/api/login', $pathItem));
+        
+        $securitySchemes = $openApi->getComponents()->getSecuritySchemes() ?? new \ArrayObject();
+        $securitySchemes['JWT'] = new \ArrayObject([
+            'type' => 'http',
+            'scheme' => 'bearer',
+            'bearerFormat' => 'JWT',
+        ]);
+        
         return $openApi;
     }
 }
+

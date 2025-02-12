@@ -3,26 +3,28 @@
 namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 class SecurityController extends AbstractController
 {
-    #[Route('/login', name: 'app_login', methods: ['POST'])]
-    public function login(AuthenticationUtils $authenticationUtils): Response
+    #[Route('/api/login', name: 'app_login', methods: ['POST'])]
+    public function login(): Response
     {
-        $user = $this->getUser();
-        return $this->json([
-            'email' => $user->getUsername(),
-            'password' => $user->getPassword(),
-        ]);
-
+        return new JsonResponse(['message' => 'Login successful']);
     }
 
-    #[Route('/logout', name: 'app_logout', methods: ['POST'])]
-    public function logout(): void
+    #[Route('/api/logout', name: 'app_logout', methods: ['POST'])]
+    public function logout(): JsonResponse
     {
-        throw new \Exception('This method can be blank - it will be intercepted by the logout key on your firewall');
+        return new JsonResponse(['message' => 'Logout successful']);
+    }
+
+    #[Route('/api/register', name: 'app_register', methods: ['POST'])]
+    public function register(): JsonResponse
+    {
+        return new JsonResponse(['message' => 'Register successful']);
     }
 }

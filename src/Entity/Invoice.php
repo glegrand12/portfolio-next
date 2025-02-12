@@ -4,12 +4,18 @@ namespace App\Entity;
 
 use ApiPlatform\Metadata\ApiResource;
 use App\Repository\InvoiceRepository;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ApiResource()]
 #[ORM\Entity(repositoryClass: InvoiceRepository::class)]
 class Invoice
 {
+
+    public function __construct()
+    {
+        $this->invoiceItems = new ArrayCollection();
+    }
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -21,8 +27,8 @@ class Invoice
     #[ORM\Column]
     private string $invoiceDate;
 
-    #[ORM\OneToMany(targetEntity: InvoiceItem::class, mappedBy: 'invoice')]
-    private InvoiceItem $invoiceItems;
+    #[ORM\OneToMany(targetEntity: InvoiceItem::class, mappedBy: 'invoice', cascade: ['persist'])]
+    private Collection $invoiceItems;
 
     #[ORM\Column]
     private float $total;

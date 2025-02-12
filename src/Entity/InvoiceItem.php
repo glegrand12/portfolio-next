@@ -15,8 +15,8 @@ class InvoiceItem
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\ManyToOne(targetEntity: Invoice::class)]
-    private Invoice $invoice;
+    #[ORM\ManyToOne(targetEntity: Invoice::class, inversedBy: 'invoiceItems')]
+    private ?Invoice $invoice = null;
 
     #[ORM\ManyToOne(targetEntity: Product::class)]
     private Product $product;
